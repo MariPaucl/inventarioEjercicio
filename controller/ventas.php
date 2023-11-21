@@ -14,9 +14,14 @@ switch($_GET["op"]){
     break;
 
     case "Insert";
-        $datos = $ventas->insert_ventas($body["codProd"],$body["cantidadVenta"]);
-        $ventas->actualizarCantidadProd($body["codProd"],$body["cantidadVenta"]);
-        echo "La venta se registro correctamente";
+    $resultadoValidacion = $ventas->validarCantidadDisponible($body["codProd"], $body["cantidadVenta"]);
+    if ($resultadoValidacion["valido"]) {
+        $ventas->insert_ventas($body["codProd"], $body["cantidadVenta"]);
+        $ventas->actualizarCantidadProd($body["codProd"], $body["cantidadVenta"]);
+        echo "La venta se registró correctamente";
+    } else {
+        echo $resultadoValidacion["mensaje"];
+    }
     break;
 }
 ?>

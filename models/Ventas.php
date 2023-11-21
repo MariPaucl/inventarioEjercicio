@@ -10,6 +10,7 @@ class Ventas extends Conectar{
         }
 
         public function insert_ventas($codProd,$cantidadVenta){
+
             $conectar= parent::conexion();
             parent::set_names();
             $sql="INSERT INTO ventas(codProd,cantidadVenta) VALUES (?, ?)";
@@ -26,6 +27,22 @@ class Ventas extends Conectar{
         $sql = $conectar->prepare($sql);
         $sql->bindValue(1, $codProd);
         $sql->execute();
+    }
+    public function validarCantidadDisponible($codProd, $cantidadVenta) {
+        $conectar = parent::conexion();
+        $sql = "SELECT cantidad FROM productos WHERE codProd = ?";
+        $stmt = $conectar->prepare($sql);
+        $stmt->execute([$codProd]);
+        $cantidadDisponible = $stmt->fetchColumn();
+
+        if ($cantidadDisponible >= $cantidadVenta) {
+            return ["valido" => true];
+        } else {
+            return [
+                "valido" => false,
+                "mensaje" => "Error: La cantidad de venta es mayor a la cantidad disponible del producto"
+            ];
+        }
     }
 }
 ?>

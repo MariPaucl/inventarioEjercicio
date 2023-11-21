@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 21-11-2023 a las 16:44:49
+-- Tiempo de generación: 21-11-2023 a las 21:13:38
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -46,7 +46,16 @@ INSERT INTO `ingresos` (`idIngreso`, `codProd`, `fechaIngreso`, `cantidadIngreso
 (5, 3, '2023-11-20', 35),
 (6, 3, '2023-11-20', 5),
 (7, 4, '2023-11-21', 50),
-(8, 4, '2023-11-21', 10);
+(8, 4, '2023-11-21', 10),
+(9, 5, '2023-11-21', 12),
+(10, 5, '2023-11-21', 12),
+(11, 6, '2023-11-21', 50),
+(12, 6, '2023-11-21', 20),
+(13, 6, '2023-11-21', 15),
+(14, 6, '2023-11-21', 16),
+(15, 6, '2023-11-21', 20),
+(16, 6, '2023-11-21', 40),
+(17, 5, '2023-11-21', 15);
 
 -- --------------------------------------------------------
 
@@ -70,7 +79,9 @@ INSERT INTO `productos` (`codProd`, `nomProd`, `precio`, `fechaRegistro`, `canti
 (1, 'Lana Morada Nube 50g', 6500.00, '2023-11-20', 23),
 (2, 'Aguja crochet 2,5 mm', 2000.00, '2023-11-20', 15),
 (3, 'Lana Copito Negra 100g', 13000.00, '2023-11-20', 28),
-(4, 'Tijeras medianas con tapa', 3500.00, '2023-11-21', 55);
+(4, 'Tijeras medianas con tapa', 3500.00, '2023-11-21', 55),
+(5, 'Lana Azul Nube 50g', 6500.00, '2023-11-21', 0),
+(6, 'Marcadores crochet x10', 2500.00, '2023-11-21', 74);
 
 -- --------------------------------------------------------
 
@@ -93,7 +104,12 @@ INSERT INTO `ventas` (`idVenta`, `codProd`, `fechaVenta`, `cantidadVenta`) VALUE
 (1, 1, '2023-11-20', 2),
 (2, 2, '2023-11-20', 5),
 (3, 3, '2023-11-20', 12),
-(4, 4, '2023-11-21', 5);
+(4, 4, '2023-11-21', 5),
+(5, 5, '2023-11-21', 24),
+(6, 6, '2023-11-21', 80),
+(7, 6, '2023-11-21', 5),
+(8, 6, '2023-11-21', 2),
+(9, 5, '2023-11-21', 15);
 
 --
 -- Índices para tablas volcadas
@@ -127,19 +143,19 @@ ALTER TABLE `ventas`
 -- AUTO_INCREMENT de la tabla `ingresos`
 --
 ALTER TABLE `ingresos`
-  MODIFY `idIngreso` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `idIngreso` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
-  MODIFY `codProd` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `codProd` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `ventas`
 --
 ALTER TABLE `ventas`
-  MODIFY `idVenta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `idVenta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Restricciones para tablas volcadas
