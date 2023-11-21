@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 17-11-2023 a las 19:50:50
+-- Tiempo de generación: 21-11-2023 a las 16:44:49
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -24,29 +24,29 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `pedidos`
+-- Estructura de tabla para la tabla `ingresos`
 --
 
-CREATE TABLE `pedidos` (
-  `idPedido` int(11) NOT NULL,
+CREATE TABLE `ingresos` (
+  `idIngreso` int(11) NOT NULL,
   `codProd` int(11) DEFAULT NULL,
-  `fechaPedido` date DEFAULT NULL,
-  `horaPedido` time DEFAULT NULL,
-  `total` double DEFAULT NULL,
-  `direccion` varchar(45) DEFAULT NULL
+  `fechaIngreso` date DEFAULT current_timestamp(),
+  `cantidadIngreso` int(15) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_bin;
 
 --
--- Volcado de datos para la tabla `pedidos`
+-- Volcado de datos para la tabla `ingresos`
 --
 
-INSERT INTO `pedidos` (`idPedido`, `codProd`, `fechaPedido`, `horaPedido`, `total`, `direccion`) VALUES
-(1, 5, '2023-11-16', '12:00:34', 2500, 'Cra 88D # 6B - 13'),
-(2, 1, '2023-11-04', '16:32:16', 13000, 'Calle 68C # 10A - 23'),
-(3, 4, '2023-11-11', '13:41:03', 3500, 'Av 68D # 11D - 13'),
-(4, 1, '2023-11-15', '08:10:40', 13000, 'Calle 71A # 3B - 24'),
-(5, 3, '2023-11-15', '18:32:11', 2000, 'Cra 80 # 24B - 14'),
-(6, 6, '2023-11-16', '15:01:53', 2000, 'Calle 67 # 9A - 20');
+INSERT INTO `ingresos` (`idIngreso`, `codProd`, `fechaIngreso`, `cantidadIngreso`) VALUES
+(1, 1, '2023-11-20', 20),
+(2, 2, '2023-11-20', 10),
+(3, 1, '2023-11-20', 5),
+(4, 2, '2023-11-20', 10),
+(5, 3, '2023-11-20', 35),
+(6, 3, '2023-11-20', 5),
+(7, 4, '2023-11-21', 50),
+(8, 4, '2023-11-21', 10);
 
 -- --------------------------------------------------------
 
@@ -57,9 +57,8 @@ INSERT INTO `pedidos` (`idPedido`, `codProd`, `fechaPedido`, `horaPedido`, `tota
 CREATE TABLE `productos` (
   `codProd` int(11) NOT NULL,
   `nomProd` varchar(30) DEFAULT NULL,
-  `categoria` varchar(25) DEFAULT NULL,
-  `precio` double DEFAULT NULL,
-  `fechaIngreso` date DEFAULT NULL,
+  `precio` decimal(10,2) DEFAULT NULL,
+  `fechaRegistro` date DEFAULT current_timestamp(),
   `cantidad` int(15) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_bin;
 
@@ -67,22 +66,44 @@ CREATE TABLE `productos` (
 -- Volcado de datos para la tabla `productos`
 --
 
-INSERT INTO `productos` (`codProd`, `nomProd`, `categoria`, `precio`, `fechaIngreso`, `cantidad`) VALUES
-(1, 'Lana Naranja 100g Copito', 'Lanas', 13000, '2023-09-25', 3),
-(2, 'Lana Azul Rey 50g Nube', 'Lanas', 6500, '2023-10-09', 10),
-(3, 'Aguja crochet 2,5 mm', 'Agujas', 2000, '2023-11-01', 14),
-(4, 'Tijeras con seguro pequeñas', 'Accesorios', 3500, '2023-10-30', 8),
-(5, 'Marcadores crochet x12', 'Accesorios', 2500, '2023-11-15', 19);
+INSERT INTO `productos` (`codProd`, `nomProd`, `precio`, `fechaRegistro`, `cantidad`) VALUES
+(1, 'Lana Morada Nube 50g', 6500.00, '2023-11-20', 23),
+(2, 'Aguja crochet 2,5 mm', 2000.00, '2023-11-20', 15),
+(3, 'Lana Copito Negra 100g', 13000.00, '2023-11-20', 28),
+(4, 'Tijeras medianas con tapa', 3500.00, '2023-11-21', 55);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `ventas`
+--
+
+CREATE TABLE `ventas` (
+  `idVenta` int(11) NOT NULL,
+  `codProd` int(11) NOT NULL,
+  `fechaVenta` date NOT NULL DEFAULT current_timestamp(),
+  `cantidadVenta` int(15) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_bin;
+
+--
+-- Volcado de datos para la tabla `ventas`
+--
+
+INSERT INTO `ventas` (`idVenta`, `codProd`, `fechaVenta`, `cantidadVenta`) VALUES
+(1, 1, '2023-11-20', 2),
+(2, 2, '2023-11-20', 5),
+(3, 3, '2023-11-20', 12),
+(4, 4, '2023-11-21', 5);
 
 --
 -- Índices para tablas volcadas
 --
 
 --
--- Indices de la tabla `pedidos`
+-- Indices de la tabla `ingresos`
 --
-ALTER TABLE `pedidos`
-  ADD PRIMARY KEY (`idPedido`),
+ALTER TABLE `ingresos`
+  ADD PRIMARY KEY (`idIngreso`),
   ADD KEY `codProd` (`codProd`);
 
 --
@@ -92,30 +113,49 @@ ALTER TABLE `productos`
   ADD PRIMARY KEY (`codProd`);
 
 --
+-- Indices de la tabla `ventas`
+--
+ALTER TABLE `ventas`
+  ADD PRIMARY KEY (`idVenta`),
+  ADD KEY `codProd` (`codProd`);
+
+--
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
 --
--- AUTO_INCREMENT de la tabla `pedidos`
+-- AUTO_INCREMENT de la tabla `ingresos`
 --
-ALTER TABLE `pedidos`
-  MODIFY `idPedido` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+ALTER TABLE `ingresos`
+  MODIFY `idIngreso` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
-  MODIFY `codProd` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `codProd` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT de la tabla `ventas`
+--
+ALTER TABLE `ventas`
+  MODIFY `idVenta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Restricciones para tablas volcadas
 --
 
 --
--- Filtros para la tabla `pedidos`
+-- Filtros para la tabla `ingresos`
 --
-ALTER TABLE `pedidos`
-  ADD CONSTRAINT `pedidos_ibfk_1` FOREIGN KEY (`codProd`) REFERENCES `productos` (`codProd`);
+ALTER TABLE `ingresos`
+  ADD CONSTRAINT `ingresos_ibfk_1` FOREIGN KEY (`codProd`) REFERENCES `productos` (`codProd`);
+
+--
+-- Filtros para la tabla `ventas`
+--
+ALTER TABLE `ventas`
+  ADD CONSTRAINT `ventas_ibfk_1` FOREIGN KEY (`codProd`) REFERENCES `productos` (`codProd`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

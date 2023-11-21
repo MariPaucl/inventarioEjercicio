@@ -8,38 +8,29 @@ class Productos extends Conectar{
         $sql->execute();
         return $resultado=$sql->fetchAll(PDO::FETCH_ASSOC);
     }
-    public function insert_producto($nomProd,$categoria,$precio,$fechaingreso,$cantidad){
+    public function insert_producto($nomProd,$precio,$cantidad){
         $conectar= parent::conexion();
         parent::set_names();
-        $sql="INSERT INTO productos(nomProd,categoria,precio,fechaingreso,cantidad) VALUES (?, ?, ?, ?, ?)";
-        $sql=$conectar->prepare($sql);
-        $sql->bindValue(1, $nomProd);
-        $sql->bindValue(2, $categoria);
-        $sql->bindValue(3, $precio);
-        $sql->bindValue(4, $fechaingreso);
-        $sql->bindValue(5, $cantidad);
-        $sql->execute();
-    }
 
-    public function deleteProducto($codProd){
-        $conectar = parent::conexion();
-        $conectar->exec('SET foreign_key_checks = 0');
-        $sql = "SELECT cantidad FROM productos WHERE codProd = ?";
-        $stmt = $conectar->prepare($sql);
-        $stmt->bindValue(1, $codProd);
-        $stmt->execute();
-        $cantidad = $stmt->fetchColumn();
+        $conectar->beginTransaction();
+        try{
+        $sqlProductos="INSERT INTO productos(nomProd,precio,cantidad) VALUES (?, ?, ?)";
+        $stmtProductos=$conectar->prepare($sqlProductos);
+        $stmtProductos->bindValue(1, $nomProd);
+        $stmtProductos->bindValue(2, $precio);
+        $stmtProductos->bindValue(3, $cantidad);
+        $stmtProductos->execute();
 
-        if ($cantidad == 0) {
-            $sqlEliminar = "DELETE FROM productos WHERE codProd = ?";
-            $stmtEliminar = $conectar->prepare($sqlEliminar);
-            $stmtEliminar->bindValue(1, $codProd);
-            $stmtEliminar->execute();
-            $conectar->exec('SET foreign_key_checks = 1');
-            return true;
-        }else{
-            return false;
-        }
+        $codProd = $conectar->lastInsertId();
+        $sqlIngresos = "INSERT INTO ingresos(codProd,cantidadIngreso) VALUES ($codProd,$cantidad)";
+        $stmtIngresos = $conectar->prepare($sqlIngresos);
+        $stmtIngresos->execute();
+
+        $conectar->commit();
+    }catch (Exception $e) {
+        $conectar->rollBack();
+        echo "Error al insertar el producto: " . $e->getMessage();
     }
+}
 }
 ?>

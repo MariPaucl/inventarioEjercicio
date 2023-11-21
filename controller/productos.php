@@ -14,17 +14,8 @@ switch($_GET["op"]){
     break;
 
     case "Insert";
-        $datos = $productos->insert_producto($body["nomProd"],$body["categoria"],$body["precio"],$body["fechaIngreso"],$body["cantidad"]);
+        $datos = $productos->insert_producto($body["nomProd"],$body["precio"],$body["cantidad"]);
         echo "Se inserto el producto correctamente";
     break;
-
-    case "DeleteProducto";
-        $resultado = $productos->deleteProducto($body["codProd"]);
-        if($resultado){
-        echo "El producto se ha eliminado correctamente";
-        }else{
-            echo "Este producto no se puede eliminar ya que sigue disponible";
-        }
-        break;
 }
 ?>
